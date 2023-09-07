@@ -26,7 +26,7 @@ class DealingFactory extends Factory
         $date = new Carbon();
         $date = $date->addDays('-'.fake()->numberBetween(0,29))->format('Y-m-d');
         $quotation = Quoting::where('date_quoting', $date)->where('currency_id', $currencyId)->first();
-
+        //var_dump($currencyId.'----'.$date.'----'.$quotation); die();
         $users = User::where('status','=','client')->get();
         $users = $users->pluck('id')->all();
 
