@@ -2,65 +2,125 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDealingRequest;
-use App\Http\Requests\UpdateDealingRequest;
+use App\Models\Currency;
 use App\Models\Dealing;
+use App\Models\Quoting;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class DealingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List (Own or Sold)
+     *  Return all transactions of a users by state 'own' or 'sold'
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
-        //
+    public function all(Request $request){
+        $user = JWTAuth::parseToken()->authenticate();
+        $rules = [
+            'state' => 'required',
+        ];
+
+        $input = $request->only(
+            'state'
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if($validator->fails()) {
+            $error = $validator->messages()->toJson();
+            return response()->json(['success'=> false, 'error'=> $error]);
+        }
+
+        $transactions =  DB::table('dealings')
+            //->join('currencies', 'currencies.id', '=', 'dealings.currency_id')
+            ->join('users', 'users.id', '=', 'dealings.user_id')
+            ->join('quotings', 'quotings.id', '=', 'dealings.quoting_dealings_id')
+            ->select("dealings.*","quotings.rate","quotings.currency_id")
+            ->where('dealings.state', '=', $request->state)
+            ->where('users.id', '=', $user->id)
+            ->get();
+
+        $transactions = $transactions->all();
+
+        $date = new Carbon();
+
+        foreach($transactions as $transaction){
+            $quoting = Quoting::where('id', $transaction->quoting_dealings_id)->first();
+            $currency = Currency::find($quoting->currency_id);
+            $quotationToday = $currency->quotation($date->format('Y-m-d'));
+            $transaction->diff = $quotationToday[0]->rate - $transaction->rate;
+
+        }
+        return response()->json( $transactions );
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Sell
+     *
+     * Update a transaction in state 'sold'
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
-    {
-        //
+    public function sell(Request $request, $id){
+        $transaction = Dealing::findOrFail($id);
+        if($transaction->state != 'sold'){
+            //todo update
+            $transaction->state = 'sold';
+            $transaction->save();
+            return response()->json(['success'=> true, 'message'=> 'Vendu !']);
+        }else{
+            return response()->json(['success'=> false, 'message'=> 'Déjà vendu !']);
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Buy
+     *
+     * Create a transaction in state 'own'
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreDealingRequest $request)
-    {
-        //
-    }
+    public function buy(Request $request, $id){
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Dealing $dealing)
-    {
-        //
-    }
+        //if (Auth::check()) {
+            //$userId = Auth::id();
+            $userId = 2;
+            //dd($userId);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Dealing $dealing)
-    {
-        //
-    }
+            $validator = Validator::make($request->only('quantity'), [
+                'quantity' => 'required|integer|min:1',
+            ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDealingRequest $request, Dealing $dealing)
-    {
-        //
-    }
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'error' => $validator->messages()], 422);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Dealing $dealing)
-    {
-        //
+            $currency = Currency::findOrFail($id);
+
+            if($currency){
+                $date = new Carbon();
+                $quotation = Quoting::where('date_quoting', '=', $date->format('Y-m-d'))->where('currency_id', '=', $currency->id)->first();
+                $transaction = new Dealing();
+                $transaction->user_id = $userId;
+                $transaction->quantity = $request->quantity;
+                $transaction->dealing_date = $date->format('Y-m-d');
+                $transaction->quoting_dealings_id = $quotation->id;
+                $transaction->save();
+
+                return response()->json(['success'=> true, 'message'=> 'Acheté !']);
+            }else{
+                return response()->json(['success'=> false, 'message'=> "La crypto monnaie demandée n'existe pas"]);
+            }
+
+        /*} else {
+            // L'utilisateur n'est pas connecté.
+        }*/
+
     }
 }

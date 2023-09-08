@@ -81,23 +81,24 @@ class UserController extends Controller
         }
 
         $rules = [
-            'name' => 'required|max:255',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'email' => [
                 'required',
                 Rule::unique('users')->ignore($user->id),
                 'email'
             ],
-            'role' => 'in:Admin,Client',
+            'status' => 'in:admin,client',
             'password' => 'confirmed',
 
         ];
 
         $input = $request->only(
-            'name',
+            'first_name',
+            'last_name',
             'email',
-            'role',
+            'status',
             'password',
-            'password_confirmation'
         );
 
         $validator = Validator::make($input, $rules);

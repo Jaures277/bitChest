@@ -11,6 +11,15 @@ class Dealing extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'quantity',
+    ];
+
+    /**
      * Get the currency linked to the transaction.
      */
     public function userDealing(){
