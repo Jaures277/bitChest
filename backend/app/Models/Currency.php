@@ -21,7 +21,7 @@ class Currency extends Model
     }
 
     public function quotation($date){
-        $quotation = DB::table('quotings')->where('date_quoting','=', $date)->where('currency_id','=', $this->id)->get();
+        $quotation = DB::table('quotings')->where('date_quoting', $date)->where('currency_id', $this->id)->get();
         return $quotation;
     }
 }

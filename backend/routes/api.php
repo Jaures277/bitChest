@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CurrencyController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,7 +25,9 @@ Route::post('/user', [UserController::class, 'show']); // DONE
 Route::post('/user/{id}', [UserController::class, 'update']); // DONE
 Route::delete('/user/{id}', [UserController::class, 'destroy']); // DONE
 
-
+// Currencies get and show
+Route::get('/currencies', [CurrencyController::class, 'index']); // DONE
+Route::get('/currency/{id}', [CurrencyController::class, 'show']); // DONE
 
 Route::middleware('auth:api')->group(function () {
     // Routes protégées par l'authentification
