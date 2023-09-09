@@ -1,6 +1,7 @@
 import axios from "axios";
-
+const baseUrl = import.meta.env.VITE_BASEURL
 export async function loginUser(user) {
-  const  data  = axios.post(`http://127.0.0.1:8001/api/login`,{ email: user.email, password: user.password });
+  const  data  = axios.post(`${baseUrl}/login`,{ email: user.email, password: user.password });
   return data;
 }
+
