@@ -21,7 +21,7 @@ class DealingController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function all(Request $request){
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = Auth::user();
         $rules = [
             'state' => 'required',
         ];
@@ -55,7 +55,6 @@ class DealingController extends Controller
             $currency = Currency::find($quoting->currency_id);
             $quotationToday = $currency->quotation($date->format('Y-m-d'));
             $transaction->diff = $quotationToday[0]->rate - $transaction->rate;
-
         }
         return response()->json( $transactions );
     }
@@ -88,10 +87,7 @@ class DealingController extends Controller
      */
     public function buy(Request $request, $id){
 
-        //if (Auth::check()) {
-            //$userId = Auth::id();
-            $userId = 2;
-            //dd($userId);
+            $user = Auth::user();
 
             $validator = Validator::make($request->only('quantity'), [
                 'quantity' => 'required|integer|min:1',
@@ -107,7 +103,7 @@ class DealingController extends Controller
                 $date = new Carbon();
                 $quotation = Quoting::where('date_quoting', '=', $date->format('Y-m-d'))->where('currency_id', '=', $currency->id)->first();
                 $transaction = new Dealing();
-                $transaction->user_id = $userId;
+                $transaction->user_id = $user->id;
                 $transaction->quantity = $request->quantity;
                 $transaction->dealing_date = $date->format('Y-m-d');
                 $transaction->quoting_dealings_id = $quotation->id;
