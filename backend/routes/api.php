@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/wallet/', [DealingController::class, 'wallet']); // porte feuille ?
     Route::get('/currency/{id}/transactions', [DealingController::class, 'list']); //
     Route::post('/dealings', [DealingController::class, 'all']); //
+    Route::get('/all/dealings/user', [DealingController::class, 'show']); //
 
     Route::post('/sell/transaction/{id}', [DealingController::class, 'sell']); // Vendre ?
     Route::post('/buy/currency/{id}', [DealingController::class, 'buy']); // Achat ?

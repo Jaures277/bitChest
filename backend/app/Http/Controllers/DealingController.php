@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\Dealing;
 use App\Models\Quoting;
 use App\Models\User;
+use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,35 @@ use Illuminate\Http\Request;
 
 class DealingController extends Controller
 {
+
+
+    /**
+     * List (transactions)
+     *
+     * Return all transactions of an users by currency
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(){
+        $user = Auth::user();
+        $transactions = $user->getAllTransactionByUserId();
+        return response()->json( $transactions );
+    }
+
+    /**
+     * List (Dealing)
+     *
+     * Return details of transactions of an users connect by iddealing
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list($id){
+        $user = Auth::user();
+        $transactions = $user->getTransactionByCurrencyId($id);
+        return response()->json( $transactions );
+    }
+
+
     /**
      * List (Own or Sold)
      *  Return all transactions of a users by state 'own' or 'sold'
@@ -72,6 +102,20 @@ class DealingController extends Controller
             //todo update
             $transaction->state = 'sold';
             $transaction->save();
+
+            if($transaction->save() == true){
+                $date = new Carbon();
+                $quotinginfo = Quoting::where('date_quoting', $date->format('Y-m-d'))->where('id', $transaction->quoting_dealings_id)->first();
+
+                $wallet = new Wallet();
+                $wallet->user_id = $transaction->user_id;
+                $wallet->quantity -= $transaction->quantity;
+                $wallet->currency_id = $quotinginfo->currency_id;
+                $wallet->sold = ($quotinginfo->quantity * $quotinginfo->rate);
+                $wallet->save();
+            }
+
+
             return response()->json(['success'=> true, 'message'=> 'Vendu !']);
         }else{
             return response()->json(['success'=> false, 'message'=> 'Déjà vendu !']);

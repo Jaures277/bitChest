@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             QuotingSeeder::class,
             DealingSeeder::class,
+            WalletSeeder::class,
         ]);
     }
 }

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('wallets', function (Blueprint $table) {
 
             $table->id();
-            $table->boolean('sold')->default(0);
-            $table->integer('quantity');
+            $table->float('sold');
+            $table->float('quantity');
 
             $table->bigInteger('currency_id')->unsigned()->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('CASCADE');

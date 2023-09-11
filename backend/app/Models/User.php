@@ -113,14 +113,41 @@ class User extends Authenticatable
         $transactions = DB::table('dealings')
             //->join('quotings', 'quotings.id', '=', 'transactions.currency_id')
             ->join('quotings', 'quotings.id', '=', 'dealings.quoting_dealings_id')
+            ->join('currencies', 'currencies.id', '=', 'quotings.currency_id')
             ->join('users', 'users.id', '=', 'dealings.user_id')
-            ->select("transactions.*", "quotings.currency_id", "quotings.rate")
+            ->select("dealings.*", "quotings.currency_id", "quotings.rate")
             ->where('users.id', $this->id)
-            //->where('currencies.id', '=', $id)
-            ->where('quotings.currency_id', $id)
             ->where('dealings.state','own')
             ->get();
         $currency = Currency::find($id);
+
+        $date = new Carbon();
+        $transactions = $transactions->all();
+
+        $quotationToday = $currency->quotation($date->format('Y-m-d'));
+
+        foreach($transactions as $transaction){
+            $transaction->diff = $quotationToday[0]->rate - $transaction->rate;
+        }
+        return $transactions;
+    }
+
+
+
+    public function getAllTransactionByUserId(){
+
+        $dealinginfo = Dealing::where('user_id', $this->id)->first();
+
+        $transactions = DB::table('dealings')
+            ->join('quotings', 'quotings.id', '=', 'dealings.quoting_dealings_id')
+            ->join('users', 'users.id', '=', 'dealings.user_id')
+            ->select("dealings.*", "quotings.currency_id", "quotings.rate")
+            ->where('dealings.user_id', $this->id)
+            ->get();
+
+        $dealinginfo = Dealing::where('user_id', $this->id)->first();
+        $quotinginfo = Quoting::where('id', $dealinginfo->quoting_dealings_id)->first();
+        $currency = Currency::find($quotinginfo->currency_id);
 
         $date = new Carbon();
         $transactions = $transactions->all();

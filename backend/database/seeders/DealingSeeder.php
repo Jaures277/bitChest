@@ -14,5 +14,7 @@ class DealingSeeder extends Seeder
     public function run(): void
     {
         DealingFactory::new()->count(10)->create();
+
+
     }
 }
