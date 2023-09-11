@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { getcurrency } from '../../redux/slices/currency/currencySlice'
 import './Home.css'
 import ListCurrency from '../../Components/ListCurrency/ListCurrency'
+import Footer from '../../Components/Footer/Footer'
 
 const Home = () => {
 
@@ -15,19 +16,20 @@ const Home = () => {
 
   const datacurrency = useSelector((state) => state.currencies.currencies)
 
-  const {status} = useSelector((state) => state.auth.user.user)
+  const { status } = useSelector((state) => state.auth.user.user)
 
   return (
-    <div>
-
+    <>
       <Header />
-
-
-      <h1>Liste des cryptomonnaies</h1>
-
-      {datacurrency && <ListCurrency datacurrency = {datacurrency} status = {status} />}
-
-    </div>
+      <main>
+        <div className="album py-5 bg-body-tertiary">
+          <div className="container">
+            {datacurrency && <ListCurrency datacurrency={datacurrency} status={status} />}
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
   )
 }
 

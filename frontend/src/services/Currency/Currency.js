@@ -7,3 +7,8 @@ export async function getCurrencies() {
 });
   return data;
 }
+
+export async function postBuyCurrency(id, quantity) {
+  const  data = axiosInstance.post(`${baseUrl}/buy/currency/${id}`, {quantity} );
+  return data;
+}
