@@ -1,7 +1,10 @@
+import Header from "../../../Components/header/Header"
 
 function Wallet() {
   return (
-    <div>Wallet</div>
+    <div>
+      <Header/>
+    </div>
   )
 }
 

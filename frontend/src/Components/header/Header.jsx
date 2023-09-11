@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { logOut } from '../../utilities/logout'
 
 function Header() {
 
-    const user = useSelector(state => state.auth.user.user)
+    const user = useSelector(state => state.auth.user)
 
     return (
         <div>
@@ -18,24 +19,38 @@ function Header() {
 
 
                 {
-                    user?.status?.toLowerCase() == "admin" ?  
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/userList">Liste des utilisateurs</Link>
-                    </li>
-                    : ''
+                    user?.user?.status?.toLowerCase() == "admin" ?
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/userList">Liste des utilisateurs</Link>
+                        </li>
+                        : ''
                 }
 
                 {
-                    user?.status?.toLowerCase() == "client" ?  
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/wallet">Portefeuille</Link>
-                    </li>
-                    : ''
+                    user?.user?.status?.toLowerCase() == "client" && 
+                    <>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/wallet">Portefeuille</Link>
+                        </li>
+
+                        <li className="nav-item">
+                             <span className="nav-link"> SOLDE : 0 </span>
+                        </li>
+                        
+                    </>
+                    
                 }
 
-                
+                {
+                    user?.token &&
 
+                    <li className="nav-item">
+                        <button onClick={logOut}>Deconnexion</button>
+                    </li>
 
+                }
+
+                    
 
             </ul>
         </div>

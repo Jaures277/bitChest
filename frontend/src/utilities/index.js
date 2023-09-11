@@ -6,3 +6,5 @@ export const getAccessTokenFromLocalStorage = () => {
 export const setAccesTokenStorage = (data) => {
     localStorage.setItem('accessToken', JSON.stringify(data))
 }
+
+export const RemoveFromLocalStorage = () => localStorage.removeItem('accessToken');

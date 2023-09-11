@@ -18,12 +18,13 @@ import Wallet from './pages/client/wallet/Wallet';
 import Create from './pages/admin/userCreate/Create';
 import List from './pages/admin/userList/List';
 import HistoryDealing from './pages/client/dealing/historik/HistoryDealing';
+import NotFound from './pages/notFound/NotFound';
 
 const ProtectedRoute = ({children})=> {
   const token = useSelector((state) => state.auth.user?.token);
   console.log(token)
     if(!token) {
-        return <Navigate to="/login" replace={true} />
+        return <Navigate to="/" replace={true} />
     }
 
     return children ? children: <Outlet />
@@ -52,9 +53,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/login' element={<Login/>}/>
+        
+        <Route path='/' element={<Login/>}/>
         
         <Route element={<ProtectedRoute />}>
+
           <Route path='/home' element={<Home/>}/>
           <Route path='/profile' element={<Profile/>}/>
 
@@ -69,7 +72,9 @@ function App() {
           </Route>
 
         </Route>
-        
+
+        <Route path='*' element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
   )

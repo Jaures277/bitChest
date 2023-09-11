@@ -1,67 +1,81 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { login } from '../../redux/slices/auth/authSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import "./login.css"
+import imgLogin from './loginImg.jpeg'
 
 const Login = () => {
 
     const [user, setUser] = useState({
-      email: "",
-      password: ""
+        email: "",
+        password: ""
     })
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const handleInput = (e)=> {
-      const {name, value} = e.target
-      const userCopy = {...user}
-      userCopy[name] = value
-      setUser(userCopy)
+    const handleInput = (e) => {
+        const { name, value } = e.target
+        const userCopy = { ...user }
+        userCopy[name] = value
+        setUser(userCopy)
     }
 
     const handleSubmit = useCallback((e) => {
-      e.preventDefault();
-      (async () => {
-          await dispatch(login(user))
-          navigate("/home")
-      })()
-      // dispatch
-  }, [dispatch,user]);
+        e.preventDefault();
+        (async () => {
+            await dispatch(login(user))
+            navigate("/home")
+        })()
+        // dispatch
+    }, [dispatch, user]);
 
-    console.log(user)
+    const token = useSelector((state) => state?.auth?.user?.token)
+
+    useEffect(() => {
+        if (token) return navigate("/home")
+    }, [])
 
     return (
-        <div>
 
-            <h4>Connexion</h4>
-            <h6 className="fw-light">Sign in to continue.</h6>
-            <form className="pt-3" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <input type="email" className="form-control form-control-lg" onChange={handleInput} name='email' id="exampleInputEmail1" placeholder="Username" />
-                </div>
-                <div className="form-group">
-                    <input type="password" className="form-control form-control-lg" onChange={handleInput} name='password' id="exampleInputPassword1" placeholder="Password" />
-                </div>
-                <div className="mt-3">
-                    <button className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
-                </div>
-                <div className="my-2 d-flex justify-content-between align-items-center">
-                    <div className="form-check">
-                        <label className="form-check-label text-muted">
-                            <input type="checkbox" className="form-check-input" />
-                            Keep me signed in
-                        </label>
+        <div className="wrapper">
+            <div className="container main">
+                <div className="row">
+                    <div className="col-md-6 side-image">
+
+
+                        <img src={imgLogin} alt="imglogin" height={490} width={850} />
+
+
                     </div>
-                    <a href="#" className="auth-link text-black">Forgot password?</a>
-                </div>
+                    <div className="col-md-6 right">
 
-                <div className="text-center mt-4 fw-light">
-                    Creer un compte <a href="register.html" className="text-primary">Create</a>
-                </div>
-            </form>
+                        <form onSubmit={handleSubmit}>
+                            <div className="input-box">
 
+                                <header> Se connecter </header>
+
+                                <div className="input-field">
+                                    <input type="text" className="input" onChange={handleInput} id="email" name='email' required="" autoComplete="off" />
+                                    <label htmlFor="email">Email</label>
+                                </div>
+                                <div className="input-field">
+                                    <input type="password" className="input" onChange={handleInput} id="pass" name='password' required="" />
+                                    <label htmlFor="pass">Password</label>
+                                </div>
+                                <div className="input-field">
+                                    <input type="submit" className="submit" value="Sign Up" />
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </div>
+
     )
 }
 
