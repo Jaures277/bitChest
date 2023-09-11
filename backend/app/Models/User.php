@@ -59,13 +59,13 @@ class User extends Authenticatable
     public function getWallet($id){
         $out = [];
 
-        $currencies = DB::table('transactions')
-            ->join('quotations', 'quotations.id', '=', 'transactions.quotation_id')
-            ->join('currencies', 'currencies.id', '=', 'transactions.currency_id')
-            ->join('users', 'users.id', '=', 'transactions.user_id')
-            ->select('currencies.id as id','currencies.name as name', 'currencies.symbol as symbol', 'transactions.quantity as quantity', 'quotations.rate as price')
-            ->where('users.id', '=', $id)
-            ->where('transactions.state', '=', 'own')
+        $currencies = DB::table('dealings')
+            ->join('quotings', 'quotings.id','dealings.quoting_dealings_id')
+            ->join('currencies', 'currencies.id','quotings.currency_id')
+            ->join('users', 'users.id','dealings.user_id')
+            ->select( 'currencies.id as id','currencies.name as name', 'dealings.quantity as quantity', 'quotings.rate as price')
+            ->where('users.id', $id)
+            ->where('dealings.state','own')
             ->get();
         $date = new Carbon();
         $currencies = $currencies->all();
@@ -87,20 +87,20 @@ class User extends Authenticatable
         }
 
 
-        $totalSold = DB::table('transactions')
-            ->join('quotations', 'quotations.id', '=', 'transactions.quotation_id')
-            ->join('users', 'users.id', '=', 'transactions.user_id')
-            ->select(DB::raw('sum(quotations.rate * transactions.quantity) as total'))
+        $totalSold = DB::table('dealings')
+            ->join('quotings', 'quotings.id','dealings.quoting_dealings_id')
+            ->join('users', 'users.id','dealings.user_id')
+            ->select(DB::raw('sum(quotings.rate * dealings.quantity) as total'))
             ->where('users.id', '=', $id)
-            ->where('transactions.state', '=', "sold")
+            ->where('dealings.state', '=', "sold")
             ->get();
 
-        $totalOwn = DB::table('transactions')
-            ->join('quotations', 'quotations.id', '=', 'transactions.quotation_id')
-            ->join('users', 'users.id', '=', 'transactions.user_id')
-            ->select(DB::raw('sum(quotations.rate * transactions.quantity) as total'))
+        $totalOwn = DB::table('dealings')
+            ->join('quotings', 'quotings.id','dealings.quoting_dealings_id')
+            ->join('users', 'users.id', 'dealings.user_id')
+            ->select(DB::raw('sum(quotings.rate * dealings.quantity) as total'))
             ->where('users.id', '=', $id)
-            ->where('transactions.state', '=', "own")
+            ->where('dealings.state', '=', "own")
             ->get();
 
         $out = [ 'currencies' => $currencies , 'total' => $totalSold[0]->total - $totalOwn[0]->total ];

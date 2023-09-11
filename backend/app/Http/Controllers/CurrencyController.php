@@ -42,6 +42,8 @@ class CurrencyController extends Controller
      */
     public function show($id){
         $currency = Currency::find($id);
+        $date = new Carbon();
+        $currency->quotations = $currency->quotation($date->format('Y-m-d'))[0];
         return response()->json(['currency' => $currency, 'quotations' => $currency->quotations ]);
     }
 }

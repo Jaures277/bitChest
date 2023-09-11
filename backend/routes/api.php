@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/currency/{id}', [CurrencyController::class, 'show']); // DONE
 
     // Client
-    Route::get('/wallet/', [DealingController::class, 'wallet']); // porte feuille ?
+    Route::get('/wallet', [UserController::class, 'wallet']); // porte feuille ?
     Route::get('/currency/{id}/transactions', [DealingController::class, 'list']); //
     Route::post('/dealings', [DealingController::class, 'all']); //
     Route::get('/all/dealings/user', [DealingController::class, 'show']); //

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -125,6 +126,19 @@ class UserController extends Controller
     public function show($id)
     {
         return response()->json(User::find($id));
+    }
+
+    /**
+     * Wallet
+     *
+     * return the wallet of an user
+     *
+     * @param  string  token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function wallet(){
+        $user = Auth::user();
+        return response()->json(['success'=> true, 'wallet'=> $user->getWallet($user->id)]);
     }
 
     /**
