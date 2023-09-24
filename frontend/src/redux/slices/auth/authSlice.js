@@ -19,6 +19,28 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     }
 })
 
+
+export const updateUser = createAsyncThunk('auth/updateUser', async (id, userData, thunkAPI) => {
+    try {
+        // Envoyez la requête HTTP pour mettre à jour les informations de l'utilisateur
+        const response = await updateUser(id, userData);
+
+        // Mettez à jour les informations de l'utilisateur dans le stockage local ou d'une manière appropriée
+         //setAccesTokenStorage(response.data);
+         console.log(response.data, 'reeeeeeeeeeeeeep')
+
+        return response.data; // ou les données mises à jour de l'utilisateur
+    } catch (error) {
+        return thunkAPI.rejectWithValue({
+            isError: true,
+            message: (error.response && error.response.data && error.response.data.message) ||
+                     error.message ||
+                     error.toString()
+        });
+    }
+})
+
+
 const initialState = {
     user: getAccessTokenFromLocalStorage('accessToken') ? getAccessTokenFromLocalStorage('accessToken') : null,
     isError: false,
@@ -55,6 +77,22 @@ export const authSlice = createSlice({
             state.isError = true;
             state.message = action.payload;
         },
+
+        // ...
+        [updateUser.pending]: () => {
+            console.log("Updating user information - pending");
+        },
+        [updateUser.fulfilled]: (state, { payload }) => {
+            console.log("Updating user information - fulfilled");
+            // Mettez à jour l'état de l'utilisateur avec les nouvelles données
+            return { ...state, user: payload };
+        },
+        [updateUser.rejected]: (state, action) => {
+            state.isError = true;
+            state.message = action.payload;
+        },
+
     }
+    
 })
 export default authSlice.reducer;

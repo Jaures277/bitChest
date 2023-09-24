@@ -43,11 +43,7 @@ const Login = () => {
             <div className="container main">
                 <div className="row">
                     <div className="col-md-6 side-image">
-
-
                         <img src={imgLogin} alt="imglogin" height={490} width={850} />
-
-
                     </div>
                     <div className="col-md-6 right">
 

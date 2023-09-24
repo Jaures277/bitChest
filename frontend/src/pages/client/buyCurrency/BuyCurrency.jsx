@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getInfoBuyCurrency } from "../../../services/BuyCurency/BuyCurrency"
-import { useDispatch } from "react-redux"
 import { postBuyCurrency } from "../../../services/Currency/Currency"
 
 
@@ -17,7 +16,6 @@ function BuyCurrency() {
         setCurrencyDetail(data)
     }
 
-    console.log(currencyDetail)
 
     useEffect(() => {
         InfoBuyCurrency(id)

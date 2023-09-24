@@ -33,9 +33,7 @@ function ListCurrency({ datacurrency, status }) {
                             { status.toLowerCase() == 'client' &&  
                             <>
                                 <td>
-
                                     <button type="button" className="btn btn-danger"> Historique </button>
-
                                 </td>
                                 <td>
                                     <Link className='btn btn-primary' to={`/buycurrency/${item.id}`}> Acheter </Link>

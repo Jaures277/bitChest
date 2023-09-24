@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
 
 import {
   BrowserRouter,
@@ -15,12 +14,12 @@ import Home from './pages/home/Home';
 import { useSelector } from 'react-redux';
 import Profile from './pages/user/Profile';
 import Wallet from './pages/client/wallet/Wallet';
+import Create from './pages/admin/userCreate/Create';
 import List from './pages/admin/userList/List';
 import HistoryDealing from './pages/client/dealing/historik/HistoryDealing';
 import NotFound from './pages/notFound/NotFound';
 import BuyCurrency from './pages/client/buyCurrency/BuyCurrency';
-import AddUser from './pages/admin/userCreate/AddUser';
-import Currency from './pages/currency/Currency';
+import AddUser from './pages/admin/userList/AddUser';
 
 const ProtectedRoute = ({ children }) => {
   const token = useSelector((state) => state.auth.user?.token);
@@ -61,10 +60,10 @@ function App() {
         <Route element={<ProtectedRoute />}>
 
           <Route path='/home' element={<Home />} />
-          <Route path='/currency' element={<Currency />} />
           <Route path='/profile' element={<Profile/>} />
 
           <Route element={<ProtectedRouteAdmin />}> 
+            <Route path='/userCreate' element={<Create />} />
             <Route path='/userList' element={<List />} />
             <Route path='/addUser' element={<AddUser />} />
           </Route>
