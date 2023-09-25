@@ -4,6 +4,7 @@ import Sidebar from '../../Components/Sidebar/Sidebar'
 import { BsFillArchiveFill, BsFillBellFill, BsFillGrid3X3GapFill, BsPeopleFill } from 'react-icons/bs'
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { Tooltip } from 'bootstrap'
+import { useSelector } from 'react-redux'
 
 
 function Home() {
@@ -12,6 +13,8 @@ function Home() {
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
   }
+
+  const user = useSelector(state => state.auth.user)
 
   const data = [
     {
@@ -69,83 +72,86 @@ function Home() {
           <h3>DASHBOARD</h3>
         </div>
 
-        <div className='main-cards'>
-          <div className='card'>
-            <div className='card-inner'>
-              <h3>PRODUCTS</h3>
-              <BsFillArchiveFill className='card_icon' />
-            </div>
-            <h1>300</h1>
-          </div>
-          <div className='card'>
-            <div className='card-inner'>
-              <h3>CATEGORIES</h3>
-              <BsFillGrid3X3GapFill className='card_icon' />
-            </div>
-            <h1>12</h1>
-          </div>
-          <div className='card'>
-            <div className='card-inner'>
-              <h3>CUSTOMERS</h3>
-              <BsPeopleFill className='card_icon' />
-            </div>
-            <h1>33</h1>
-          </div>
-          <div className='card'>
-            <div className='card-inner'>
-              <h3>ALERTS</h3>
-              <BsFillBellFill className='card_icon' />
-            </div>
-            <h1>42</h1>
-          </div>
-        </div>
+        {
+          user?.user?.status?.toLowerCase() == "admin" ?
+            <>
+              <div className='main-cards'>
+                
+                <div className='card'>
+                  <div className='card-inner'>
+                    <h3>CRYPTO</h3>
+                    <BsFillArchiveFill className='card_icon' />
+                  </div>
+                  <h1>10</h1>
+                </div>
 
-        <div className='charts'>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
-          </ResponsiveContainer>
+                <div className='card'>
+                  <div className='card-inner'>
+                    <h3>UTILISATEURS</h3>
+                    <BsFillGrid3X3GapFill className='card_icon' />
+                  </div>
+                  <h1>12</h1>
+                </div>
+                
+              </div>
+            </>
+            : ''
+        }
 
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-            </LineChart>
-          </ResponsiveContainer>
 
-        </div>
+        {
+          user?.user?.status?.toLowerCase() == "client" ?
+            <>
+              <div className='charts'>
+
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={data}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="pv" fill="#8884d8" />
+                    <Bar dataKey="uv" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    width={500}
+                    height={300}
+                    data={data}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                  </LineChart>
+                </ResponsiveContainer>
+
+              </div>
+            </>
+            : ''
+        }
       </main>
 
 

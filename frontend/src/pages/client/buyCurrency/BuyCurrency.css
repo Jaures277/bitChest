@@ -1,0 +1,25 @@
+/* Style de base pour l'alerte de danger */
+.alert {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  
+  /* Style pour l'alerte de danger */
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+  
+  /* Style pour le texte de l'alerte */
+  .alert-danger p {
+    margin: 0;
+  }
+  
+  /* Style pour le lien dans l'alerte (facultatif) */
+  .alert-danger a {
+    color: #721c24;
+    text-decoration: underline;
+  }

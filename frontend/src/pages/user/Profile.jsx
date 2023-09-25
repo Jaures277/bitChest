@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../Components/Header/Header'
 import Sidebar from '../../Components/Sidebar/Sidebar'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { updateUser } from '../../services/updateUser/updateUser'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function Profile() {
+
+  const navigate = useNavigate()
 
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -14,9 +16,13 @@ function Profile() {
   }
 
   const user = useSelector(state => state?.auth?.user?.user)
-  console.log(user)
+  
   const [userUpdated, setUserUpdated] = useState(user)
-  console.log(userUpdated, 'uupdate')
+  
+  useEffect(() => {
+    setUserUpdated(user);
+  }, [user]);
+
   const handleInputs = (e) => {
     const { name, value } = e.target
     const copyOfUpdatedUser = { ...userUpdated }
@@ -30,7 +36,7 @@ function Profile() {
 
     try {
       await dispatch(updateUser(userUpdated.id, userUpdated));
-      Navigate("/home");
+      navigate("/home");
     } catch (error) {
       // Gérez les erreurs ici si nécessaire
     }
@@ -48,22 +54,32 @@ function Profile() {
           <div className='main-title'>
             <h3>MON PROFILE</h3>
           </div>
-          <h1>koko</h1>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="lastname">nom : </label>
-              <input type="text" name='last_name' onChange={handleInputs} value={userUpdated?.last_name} id='lastname' />
-            </div>
-            <div>
-              <label htmlFor="firstname">prenom : </label>
-              <input type="text" name='first_name' onChange={handleInputs} value={userUpdated?.first_name} id='firstname' />
-            </div>
-            <div>
-              <label htmlFor="email">email : </label>
-              <input type="email" name='email' onChange={handleInputs} value={userUpdated?.email} id='email' />
-            </div>
-            <button type='submit'>Envoyer</button>
-          </form>
+
+          <div className="container">
+            <h1>koko</h1>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="lastname">nom : </label>
+                <input type="text" name='last_name' onChange={handleInputs} value={userUpdated?.last_name} id='last_name' />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="firstname">prenom : </label>
+                <input type="text" name='first_name' onChange={handleInputs} value={userUpdated?.first_name} id='first_name' />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">email : </label>
+                <input type="email" name='email' onChange={handleInputs} value={userUpdated?.email} id='email' />
+              </div>
+
+              <div className="form-group">
+                <input type="submit" value="Modifier" />
+              </div>
+
+            </form>
+          </div>
+
         </main>
       </div>
     </>

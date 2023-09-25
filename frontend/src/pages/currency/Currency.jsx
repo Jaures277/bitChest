@@ -33,12 +33,12 @@ function Currency() {
         <Header OpenSidebar={OpenSidebar} />
         <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
 
-        <main className='main-container'>
+        <main className='container'>
             <div className='main-title'>
               <h3>Liste des crytomonnaies</h3>
             </div>
         
-            <div className="container">
+            <div>
                 {datacurrency && <ListCurrency datacurrency={datacurrency} status={status} />}
             </div>
 

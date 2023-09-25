@@ -40,7 +40,7 @@ const Login = () => {
     return (
 
         <div className="wrapper">
-            <div className="container main">
+            <div className="container-email">
                 <div className="row">
                     <div className="col-md-6 side-image">
                         <img src={imgLogin} alt="imglogin" height={490} width={850} />
@@ -50,15 +50,15 @@ const Login = () => {
                         <form onSubmit={handleSubmit}>
                             <div className="input-box">
 
-                                <header> Se connecter </header>
+                                <h2> Se connecter </h2>
 
                                 <div className="input-field">
+                                    <label htmlFor="email">Email :</label>
                                     <input type="text" className="input" onChange={handleInput} id="email" name='email' required="" autoComplete="off" />
-                                    <label htmlFor="email">Email</label>
                                 </div>
                                 <div className="input-field">
+                                    <label htmlFor="email">Mot de passe :</label>
                                     <input type="password" className="input" onChange={handleInput} id="pass" name='password' required="" />
-                                    <label htmlFor="pass">Password</label>
                                 </div>
                                 <div className="input-field">
                                     <input type="submit" className="submit" value="Sign Up" />

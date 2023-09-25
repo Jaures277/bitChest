@@ -2,9 +2,17 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getInfoBuyCurrency } from "../../../services/BuyCurency/BuyCurrency"
 import { postBuyCurrency } from "../../../services/Currency/Currency"
-
+import Header from "../../../Components/Header/Header"
+import Sidebar from "../../../Components/Sidebar/Sidebar"
+import './BuyCurrency.css'
 
 function BuyCurrency() {
+
+    const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
+
+    const OpenSidebar = () => {
+        setOpenSidebarToggle(!openSidebarToggle)
+    }
 
     const [currencyDetail, setCurrencyDetail] = useState([])
 
@@ -16,7 +24,6 @@ function BuyCurrency() {
         setCurrencyDetail(data)
     }
 
-
     useEffect(() => {
         InfoBuyCurrency(id)
     }, [])
@@ -25,37 +32,58 @@ function BuyCurrency() {
     const [quantity, setQuantity] = useState()
     const navigate = useNavigate()
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const response = await postBuyCurrency(id, quantity)
         console.log(response)
-        if(response?.status == 200){
-            navigate('/home') 
+        if (response?.status == 200) {
+            navigate('/home')
         }
     };
 
 
     return (
-        <div>
-            <h1>
-                BuyCurrency
-            </h1>
-
-            <div>
-                <span>Cours actuel du {currencyDetail?.currency?.name} est : {currencyDetail?.quotations?.rate} </span>
 
 
-                <form onSubmit={handleSubmit}>
-                    <input className="" name="quantity" onChange={(e)=>setQuantity(e.target.value)} placeholder="Ajouter la quantite" />
-                    <br/>
-                    <button className="btn-danger">Acheter</button>
-                </form>
+        <>
+            <div className='grid-container'>
 
+                <Header OpenSidebar={OpenSidebar} />
+
+                <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+
+                <main className='container'>
+                    <div className='main-title'>
+                        <h3>Acheter une cryptomonnaie</h3>
+                    </div>
+
+                    <div className="container">
+
+                        <div className="alert alert-danger" role="alert">
+                            <span>Cours actuel du {currencyDetail?.currency?.name} est : {currencyDetail?.quotations?.rate} </span>
+                        </div>
+
+
+                        <form onSubmit={handleSubmit}>
+
+                            <div className="form-group">
+                                <label htmlFor="firstName">Nom</label>
+                                <input type="text" className="form-control" name="quantity" onChange={(e) => setQuantity(e.target.value)} placeholder="Ajouter la quantite" required="" />
+                            </div>
+
+                            <div className="form-group">
+                                <input type="submit" value="Enregistrer" />
+                            </div>
+                        </form>
+
+                    </div>
+
+                </main>
 
             </div>
 
+        </>
 
-        </div>
     )
 }
 

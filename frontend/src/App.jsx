@@ -20,6 +20,7 @@ import HistoryDealing from './pages/client/dealing/historik/HistoryDealing';
 import NotFound from './pages/notFound/NotFound';
 import BuyCurrency from './pages/client/buyCurrency/BuyCurrency';
 import AddUser from './pages/admin/userCreate/AddUser';
+import EditUser from './pages/admin/userEdit/EditUser';
 import Currency from './pages/currency/Currency';
 
 const ProtectedRoute = ({ children }) => {
@@ -67,6 +68,8 @@ function App() {
           <Route element={<ProtectedRouteAdmin />}> 
             <Route path='/userList' element={<List />} />
             <Route path='/addUser' element={<AddUser />} />
+            <Route path='/editUser/:id' element={<EditUser />} />
+            <Route path='/deleteUser/:id' />
           </Route>
 
           <Route element={<ProtectedRouteClient />}>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 function ListCurrency({ datacurrency, status }) {
 
     return (
+
         <div>
 
             <table className="table table-striped table-bordered">
@@ -28,15 +29,15 @@ function ListCurrency({ datacurrency, status }) {
                         <tr key={item.id} className='text-center'>
                             <td >{item.name}</td>
                             <td >{item.today_quotation.rate}</td>
-                            <td>{item.today_quotation.diff}</td>
+                            <td>{item.today_quotation.diff.toFixed(2)}</td>
 
                             { status.toLowerCase() == 'client' &&  
                             <>
                                 <td>
-                                    <button type="button" className="btn btn-danger"> Historique </button>
+                                    <Link to={`/editUser/${item.id}`} className="button secondary"> Historique </Link>
                                 </td>
                                 <td>
-                                    <Link className='btn btn-primary' to={`/buycurrency/${item.id}`}> Acheter </Link>
+                                    <Link className='button danger' to={`/buycurrency/${item.id}`}> Acheter </Link>
                                 </td>
                             </>
                          } 
