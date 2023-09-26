@@ -7,8 +7,8 @@ return [
     'BCH'   => 'Bitcoin Cash',
     'ADA'   => 'Cardano',
     'LTC'   => 'Litecoin',
-    'XEM'   => 'NEM',
+    'XEM'   => 'nem',
     'XLM'   => 'Stellar',
-    'MIOTA' => 'IOTA',
+    'MIOTA' => 'iota',
     'DASH'  => 'Dash'
 ];
