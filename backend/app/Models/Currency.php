@@ -15,11 +15,6 @@ class Currency extends Model
         return $this->hasMany(Quoting::class, 'currency_id');
     }
 
-    public function walletCurrencies()
-    {
-        return $this->hasMany(Wallet::class, 'currency_id');
-    }
-
     public function quotation($date){
         $quotation = DB::table('quotings')->where('date_quoting', $date)->where('currency_id', $this->id)->get();
         return $quotation;

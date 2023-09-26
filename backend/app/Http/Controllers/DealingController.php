@@ -107,14 +107,11 @@ class DealingController extends Controller
                 $date = new Carbon();
                 $quotinginfo = Quoting::where('date_quoting', $date->format('Y-m-d'))->where('id', $transaction->quoting_dealings_id)->first();
 
-                $wallet = new Wallet();
-                $wallet->user_id = $transaction->user_id;
+                $walletinfo = Wallet::where('user_id', $transaction->user_id)->first();
+                $wallet = Wallet::find($walletinfo->id);
                 $wallet->quantity -= $transaction->quantity;
-                $wallet->currency_id = $quotinginfo->currency_id;
-                $wallet->sold = ($quotinginfo->quantity * $quotinginfo->rate);
                 $wallet->save();
             }
-
 
             return response()->json(['success'=> true, 'message'=> 'Vendu !']);
         }else{
@@ -145,13 +142,21 @@ class DealingController extends Controller
 
             if($currency){
                 $date = new Carbon();
-                $quotation = Quoting::where('date_quoting', '=', $date->format('Y-m-d'))->where('currency_id', '=', $currency->id)->first();
+                $quotation = Quoting::where('date_quoting', $date->format('Y-m-d'))->where('currency_id', $currency->id)->first();
                 $transaction = new Dealing();
                 $transaction->user_id = $user->id;
                 $transaction->quantity = $request->quantity;
                 $transaction->dealing_date = $date->format('Y-m-d');
                 $transaction->quoting_dealings_id = $quotation->id;
                 $transaction->save();
+
+                if($transaction->save() == true){
+                    $walletinfo = Wallet::where('user_id', $user->id)->first();
+                    $wallet = Wallet::find($walletinfo->id);
+                    $wallet->quantity += $transaction->quantity;
+                    $wallet->sold += ($quotation->rate * $transaction->quantity);
+                    $wallet->save();
+                }
 
                 return response()->json(['success'=> true, 'message'=> 'Acheté !']);
             }else{

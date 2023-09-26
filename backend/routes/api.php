@@ -23,10 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     //Route::get('/user', [AuthController::class, 'user']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/users', "UserController@index"); // DONE
+    Route::get('/users', [UserController::class, 'index']); // DONE
     Route::get('/user/{id}', [UserController::class, 'show']); // DONE
     Route::post('/user', [UserController::class, 'store']); // DONE
-    Route::post('/user/{id}', [UserController::class, 'update']); // DONE
+    Route::put('/user/{id}', [UserController::class, 'update']); // DONE
     Route::delete('/user/{id}', [UserController::class, 'destroy']); // DONE
 
     // Currencies get and show
@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Client
     Route::get('/wallet', [UserController::class, 'wallet']); // porte feuille ?
+    Route::get('/wallet/client', [UserController::class, 'walletInfo']); // porte feuille ?
     Route::get('/currency/{id}/transactions', [DealingController::class, 'list']); //
     Route::post('/dealings', [DealingController::class, 'all']); //
     Route::get('/all/dealings/user', [DealingController::class, 'show']); //

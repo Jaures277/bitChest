@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,7 @@ class UserController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users|max:155',
             'password' => 'required|min:4',
+            'status' => 'required|string',
         ]);
 
 
@@ -49,10 +51,10 @@ class UserController extends Controller
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
-                'status' => $request->status,
                 'email' => $request->email,
+                'status' => $request->status,
                 'remember_token' => Str::random(10), //Generate verification code,
-                'password' => Hash::make('password')
+                'password' => Hash::make($request->password)
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -77,10 +79,6 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if($user->status != 'admin'){
-            return response()->json(['success'=> false, 'error'=> "Vous n'êtes pas autorisée à modifié cette utilisateur"])->header('Content-Type', 'application/json');
-        }
-
         $rules = [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
@@ -90,8 +88,7 @@ class UserController extends Controller
                 'email'
             ],
             'status' => 'in:admin,client',
-            'password' => 'confirmed',
-
+            //'password' => 'confirmed',
         ];
 
         $input = $request->only(
@@ -99,7 +96,7 @@ class UserController extends Controller
             'last_name',
             'email',
             'status',
-            'password',
+            //'password',
         );
 
         $validator = Validator::make($input, $rules);
@@ -131,7 +128,7 @@ class UserController extends Controller
     /**
      * Wallet
      *
-     * return the wallet of an user
+     * return the wallet of a user
      *
      * @param  string  token
      * @return \Illuminate\Http\JsonResponse
@@ -139,6 +136,19 @@ class UserController extends Controller
     public function wallet(){
         $user = Auth::user();
         return response()->json(['success'=> true, 'wallet'=> $user->getWallet($user->id)]);
+    }
+
+    /**
+     * Wallet
+     *
+     * return the wallet of a user
+     *
+     * @param  string  token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function walletInfo(){
+        $user = Auth::user();
+        return response()->json(Wallet::where('user_id', $user->id)->first());
     }
 
     /**

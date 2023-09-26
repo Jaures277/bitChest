@@ -18,38 +18,23 @@ class WalletSeeder extends Seeder
     public function run(): void
     {
         $dealings = Dealing::all();
-        $date = new Carbon();
         foreach ($dealings as $dealing){
-            $quotinginfo = Quoting::where('date_quoting', $date->format('Y-m-d'))->first();
 
             $wallet = Wallet::where('user_id', $dealing->user_id)->first();
-            if( ($wallet) && ($dealing->state == 'own') ){
+            if($wallet){
                 $Onewallet = Wallet::findOrFail($wallet->id);
                 $Onewallet->quantity += $dealing->quantity;
-                $Onewallet->sold += ($dealing->quantity * $quotinginfo->rate);
+                $Onewallet->sold += $wallet->sold;
                 $Onewallet->save();
-            }elseif ( ($wallet) && ($dealing->state == 'sold') ){
-                $Onewallet = Wallet::findOrFail($wallet->id);
-                $Onewallet->quantity -= $dealing->quantity;
-                $Onewallet->sold -= ($dealing->quantity * $quotinginfo->rate);
-                $Onewallet->save();
-            }elseif ( (!$wallet) && ($dealing->state == 'own') ){
+            }elseif(!$wallet){
                 $wallet = new Wallet();
                 $wallet->user_id = $dealing->user_id;
-                $wallet->quantity = $dealing->quantity;
-                $wallet->currency_id = $quotinginfo->currency_id;
-                $wallet->sold = ($dealing->quantity * $quotinginfo->rate);
+                $wallet->quantity = fake()->numberBetween($min = 1, $max = 100);
+                $wallet->sold = fake()->numberBetween($min = 200, $max = 500);
                 $wallet->save();
             }
-            /*elseif ( (!$wallet) && ($dealing->state == 'sold') ){
 
-                $wallet = new Wallet();
-                $wallet->user_id = $dealing->user_id;
-                $wallet->quantity = $dealing->quantity;
-                $wallet->currency_id = $quotinginfo->currency_id;
-                $wallet->sold = $quotinginfo->rate;
-                $wallet->save();
-            }*/
+
         }
     }
 }

@@ -67,6 +67,7 @@ class User extends Authenticatable
             ->where('users.id', $id)
             ->where('dealings.state','own')
             ->get();
+
         $date = new Carbon();
         $currencies = $currencies->all();
         for ($i=0; $i < count($currencies) ; $i++) {
@@ -85,7 +86,6 @@ class User extends Authenticatable
                 }
             }
         }
-
 
         $totalSold = DB::table('dealings')
             ->join('quotings', 'quotings.id','dealings.quoting_dealings_id')

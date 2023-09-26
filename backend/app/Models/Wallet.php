@@ -10,13 +10,6 @@ class Wallet extends Model
     use HasFactory;
 
     /**
-     * Get the currency linked to the wallet.
-     */
-    public function currency(){
-        return $this->belongsTo(Currency::class,'currency_id');
-    }
-
-    /**
      * Get the user linked to the wallet.
      */
     public function userwallet(){

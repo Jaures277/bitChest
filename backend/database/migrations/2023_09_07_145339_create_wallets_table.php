@@ -17,8 +17,6 @@ return new class extends Migration
             $table->float('sold');
             $table->float('quantity');
 
-            $table->bigInteger('currency_id')->unsigned()->nullable();
-            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('CASCADE');
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->timestamps();
