@@ -52,31 +52,28 @@ function BuyCurrency() {
 
                 <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
 
-                <main className='container'>
+                <main className='container-buy'>
                     <div className='main-title'>
                         <h3>Acheter une cryptomonnaie</h3>
                     </div>
 
-                    <div className="container">
-
-                        <div className="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert">
                             <span>Cours actuel du {currencyDetail?.currency?.name} est : {currencyDetail?.quotations?.rate} </span>
                         </div>
-
+ 
 
                         <form onSubmit={handleSubmit}>
 
                             <div className="form-group">
-                                <label htmlFor="firstName">Nom</label>
                                 <input type="text" className="form-control" name="quantity" onChange={(e) => setQuantity(e.target.value)} placeholder="Ajouter la quantite" required="" />
                             </div>
 
                             <div className="form-group">
-                                <input type="submit" value="Enregistrer" />
+                                <input type="submit" value="Acheter" />
                             </div>
+
                         </form>
 
-                    </div>
 
                 </main>
 

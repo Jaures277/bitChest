@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import Profile from './pages/user/Profile';
 import Wallet from './pages/client/wallet/Wallet';
 import List from './pages/admin/userList/List';
-import HistoryDealing from './pages/client/dealing/historik/HistoryDealing';
+import Dealing from './pages/client/dealing/Dealing';
 import NotFound from './pages/notFound/NotFound';
 import BuyCurrency from './pages/client/buyCurrency/BuyCurrency';
 import AddUser from './pages/admin/userCreate/AddUser';
@@ -74,8 +74,9 @@ function App() {
 
           <Route element={<ProtectedRouteClient />}>
             <Route path='/wallet' element={<Wallet />} />
-            <Route path='/historyDealing' element={<HistoryDealing />} />
             <Route path='/buycurrency/:id' element={<BuyCurrency />} />
+            <Route path='/sellCurrency/:id' />
+            <Route path='/dealing' element={<Dealing />} />
           </Route>
 
         </Route>

@@ -1,4 +1,15 @@
 /* Style de base pour l'alerte de danger */
+
+.container-buy {
+  max-width: 800px;
+  margin: 50px;
+  padding: 20px;
+  /* background-color: #fdfcff; */
+  padding-right: 40px;
+  border-radius: 5px;
+}
+
+
 .alert {
     padding: 15px;
     border: 1px solid transparent;
@@ -23,3 +34,38 @@
     color: #721c24;
     text-decoration: underline;
   }
+
+
+/* Style pour les champs de formulaire */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style pour le bouton Soumettre */
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}

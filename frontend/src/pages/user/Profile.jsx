@@ -56,7 +56,7 @@ function Profile() {
           </div>
 
           <div className="container">
-            <h1>koko</h1>
+            <h1>Mon profile</h1>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="lastname">nom : </label>

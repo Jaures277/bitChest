@@ -1,13 +1,24 @@
 import { BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsPeopleFill }
     from 'react-icons/bs'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logOut } from '../../utilities/logout'
+import { useEffect } from 'react'
+import { getinfowallet } from '../../redux/slices/infoWallet/walletSlice'
 
 // eslint-disable-next-line react/prop-types
 function Sidebar({ openSidebarToggle, OpenSidebar }) {
     const user = useSelector(state => state.auth.user)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getinfowallet())
+    }, [])
+
+    const datawallet = useSelector((state) => state?.walletinfo?.walletinfo?.sold)
+
     return (
         <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
 
@@ -41,6 +52,11 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
                                     <BsGrid1X2Fill className='icon' /> Liste des utilisateurs
                                 </Link>
                             </li>
+                            <li className='sidebar-list-item'>
+                                <Link to="/profile">
+                                    <BsPeopleFill className='icon' /> Mon compte
+                                </Link>
+                            </li>
                         </>
                         : ''
                 }
@@ -67,22 +83,38 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
                                 <BsFillArchiveFill className='icon' /> Mon Portefeuille
                             </Link>
                         </li>
+
+                        <li className='sidebar-list-item'>
+                            <Link to="/dealing">
+                                <BsGrid1X2Fill className='icon' /> Mes transactions
+                            </Link>
+                        </li>
+
+                        <li className='sidebar-list-item'>
+                            <Link to="/profile">
+                                <BsPeopleFill className='icon' /> Mon compte
+                            </Link>
+                        </li>
+
+                        <li className='sidebar-list-item'>
+                            <h3>
+                                Solde : {datawallet} €
+                            </h3>
+                        </li>
                     </>
                 }
 
-                <li className='sidebar-list-item'>
-                    <Link to="/profile">
-                        <BsPeopleFill className='icon' /> Mon compte
-                    </Link>
-                </li>
+
 
                 {
                     user?.token &&
-                    <li className='sidebar-list-item'>
-                        <button className="button-like-link" onClick={logOut}>
-                            Deconnexion
-                        </button>
-                    </li>
+                    <>
+                        <li className='sidebar-list-item'>
+                            <button className="button-like-link" onClick={logOut}>
+                                Deconnexion
+                            </button>
+                        </li>
+                    </>
                 }
 
 

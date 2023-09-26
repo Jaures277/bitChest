@@ -10,9 +10,9 @@ function ListCurrency({ datacurrency, status }) {
             <table className="table table-striped table-bordered">
                 <thead className="table-light">
                     <tr className='text-center'>
+                        <th>Image</th>
                         <th>Nom</th>
                         <th>Cours actuel</th>
-                        <th>Plus/Moins value</th>
                         { status.toLowerCase() == 'client' &&  
                             <>
                         <th> </th>
@@ -27,9 +27,9 @@ function ListCurrency({ datacurrency, status }) {
                     {datacurrency?.map((item) => (
                         // eslint-disable-next-line react/jsx-key
                         <tr key={item.id} className='text-center'>
+                            <td><img src={item.image} /></td>
                             <td >{item.name}</td>
-                            <td >{item.today_quotation.rate}</td>
-                            <td>{item.today_quotation.diff.toFixed(2)}</td>
+                            <td >{item.today_quotation.rate} €</td>
 
                             { status.toLowerCase() == 'client' &&  
                             <>

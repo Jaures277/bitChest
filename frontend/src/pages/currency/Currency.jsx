@@ -33,7 +33,7 @@ function Currency() {
         <Header OpenSidebar={OpenSidebar} />
         <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
 
-        <main className='container'>
+        <main className='main-container'>
             <div className='main-title'>
               <h3>Liste des crytomonnaies</h3>
             </div>
