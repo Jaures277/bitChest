@@ -135,13 +135,13 @@ class User extends Authenticatable
 
 
     public function getAllTransactionByUserId(){
-
-        $dealinginfo = Dealing::where('user_id', $this->id)->first();
+        //$dealinginfo = Dealing::where('user_id', $this->id)->first();
 
         $transactions = DB::table('dealings')
-            ->join('quotings', 'quotings.id', '=', 'dealings.quoting_dealings_id')
+            ->join('quotings', 'quotings.id','dealings.quoting_dealings_id')
+            ->join('currencies', 'currencies.id','quotings.currency_id')
             ->join('users', 'users.id', '=', 'dealings.user_id')
-            ->select("dealings.*", "quotings.currency_id", "quotings.rate")
+            ->select("dealings.*", "quotings.currency_id", "currencies.name as name", "quotings.rate")
             ->where('dealings.user_id', $this->id)
             ->get();
 

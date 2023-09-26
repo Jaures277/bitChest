@@ -68,10 +68,11 @@ class DealingController extends Controller
         }
 
         $transactions =  DB::table('dealings')
-            //->join('currencies', 'currencies.id', '=', 'dealings.currency_id')
+
             ->join('users', 'users.id', '=', 'dealings.user_id')
             ->join('quotings', 'quotings.id', '=', 'dealings.quoting_dealings_id')
-            ->select("dealings.*","quotings.rate","quotings.currency_id")
+            ->join('currencies', 'currencies.id', '=', 'quotings.currency_id')
+            ->select("dealings.*","quotings.rate", "currencies.name as name", "quotings.currency_id")
             ->where('dealings.state', '=', $request->state)
             ->where('users.id', '=', $user->id)
             ->get();
@@ -105,10 +106,11 @@ class DealingController extends Controller
 
             if($transaction->save() == true){
                 $date = new Carbon();
-                $quotinginfo = Quoting::where('date_quoting', $date->format('Y-m-d'))->where('id', $transaction->quoting_dealings_id)->first();
+                $quotation = Quoting::where('date_quoting', $date->format('Y-m-d'))->where('id', $transaction->quoting_dealings_id)->first();
 
                 $walletinfo = Wallet::where('user_id', $transaction->user_id)->first();
                 $wallet = Wallet::find($walletinfo->id);
+                $wallet->sold -= ($quotation->rate * $transaction->quantity);
                 $wallet->quantity -= $transaction->quantity;
                 $wallet->save();
             }
