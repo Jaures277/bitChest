@@ -1,6 +1,6 @@
 import Header from "../../../Components/Header/Header"
 import { useEffect, useState } from "react"
-import { getUsers } from "../../../services/updateUser/updateUser"
+import { deletedUser, getUsers } from "../../../services/updateUser/updateUser"
 import { Link } from "react-router-dom"
 import Sidebar from "../../../Components/Sidebar/Sidebar"
 import './List.css'
@@ -39,7 +39,7 @@ function List() {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         try {
-          deleteUser(id)
+          deletedUser(id)
           setListUsers((allUser)=>
             allUser.filter((oneUser)=>oneUser.id !== id )
           )

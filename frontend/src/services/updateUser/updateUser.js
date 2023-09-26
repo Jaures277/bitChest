@@ -31,7 +31,7 @@ export const updateInfoUser = async(id, user)=> {
   return data;
 }
 
-export const deleteUser = async(id)=> {
+export const deletedUser = async(id)=> {
   const  data = await axiosInstance.delete(`${baseUrl}/user/${id}`);
   return data;
 }

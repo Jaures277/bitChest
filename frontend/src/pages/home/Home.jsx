@@ -69,7 +69,7 @@ function Home() {
 
       <main className='main-container'>
         <div className='main-title'>
-          <h3>DASHBOARD</h3>
+          <h3>DASHBOARD | Utilisateur connecté : {user?.user?.last_name}</h3>
         </div>
 
         {
