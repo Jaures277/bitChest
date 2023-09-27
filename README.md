@@ -96,10 +96,7 @@ L'application offre les fonctionnalités suivantes :
 -Laravel 10.x - Framework PHP pour le backend.
 -React.js ^17.0.2 - Framework JavaScript pour le frontend.
 
-<<<<<<< Updated upstream
-## Auteurs
-Ce projet a été développé par Jaures Okou.
-=======
+
 ## Parametre d'acces
 Admin : admin@exemple.com - 
 Client : client@exemple.com
@@ -107,4 +104,4 @@ Mot de passe : password
 
 ## Auteurs
 Ce projet a été développé par Jaures Okou.
->>>>>>> Stashed changes
+
