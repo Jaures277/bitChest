@@ -3,7 +3,9 @@ import axiosInstance, { getAuthorizationHeader } from "../axiosInstance/axiosIns
 const baseUrl = import.meta.env.VITE_BASEURL
 
 export async function getWallet(status) {
-  const  data = axiosInstance.post(`${baseUrl}/dealings`, {state: status});
+  const  data = axiosInstance.post(`${baseUrl}/dealings`, {state: status}, {
+    headers: { Authorization: getAuthorizationHeader() }
+  });
   return data;
 }
 
@@ -20,6 +22,8 @@ export async function getInfoWallet() {
 }
 
 export async function getHistorikDealing() {
-  const  data = axiosInstance.get(`${baseUrl}/all/dealings/user`);
+  const  data = axiosInstance.get(`${baseUrl}/all/dealings/user`, {
+    headers: { Authorization: getAuthorizationHeader() }
+  });
   return data;
 }

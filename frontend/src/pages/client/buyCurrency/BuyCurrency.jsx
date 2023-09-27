@@ -37,7 +37,7 @@ function BuyCurrency() {
         const response = await postBuyCurrency(id, quantity)
         console.log(response)
         if (response?.status == 200) {
-            navigate('/home')
+            navigate('/wallet')
         }
     };
 

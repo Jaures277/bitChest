@@ -17,12 +17,16 @@ export async function getUsers() {
 }
 
 export async function addnewUsers(user) {
-  const  data = axiosInstance.post(`${baseUrl}/user`,{ first_name: user.first_name, last_name: user.last_name, email: user.email, password: user.password, status: user.status });
+  const  data = axiosInstance.post(`${baseUrl}/user`,{ first_name: user.first_name, last_name: user.last_name, email: user.email, password: user.password, status: user.status }, {
+    headers: { Authorization: getAuthorizationHeader() }
+  });
   return data;
 }
 
 export const getInfoUser = async(id)=> {
-  const  data = await axiosInstance.get(`${baseUrl}/user/${id}`);
+  const  data = await axiosInstance.get(`${baseUrl}/user/${id}`, {
+    headers: { Authorization: getAuthorizationHeader() }
+  });
   return data;
 }
 
